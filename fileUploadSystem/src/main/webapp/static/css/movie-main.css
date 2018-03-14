@@ -1,0 +1,217 @@
+@charset "utf-8";
+
+html,body{
+	height:100%;
+	font-family:Meiryo UI;
+}
+.container-fluid {
+    height:100%;
+}
+
+/*ダイアログ*/
+.modal-dialog {
+	width: 600px;
+	margin: 30px auto;
+}
+.modal-content {
+	background-color: #333;
+	color: #999;
+}
+
+/*メインパネル*/
+.main-panel{
+    height:100%;
+    min-height:100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 操作パネル*/
+.control-panel{
+    height: 42px;
+    text-align: right;
+    flex: none;
+}
+
+/*領域の行指定(flexbox)*/
+.movie-panel{
+    margin:0px;
+    padding:0px;
+    background-color: #000;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ビデオ*/
+video {
+    object-fit: fill;
+}
+
+/*再生パネル*/
+.play-panel {
+    /*display: none;*/
+    clear: both;
+    padding: 2px 2px 2px 2px;
+    margin: 2px 0px 2px 0px;
+    /*margin: 0px 0px 0px 0px;wellのmarginを消す*/
+    line-height:1;
+    /* ヘッダーの高さを固定するための指定 */
+    height: 83px;
+    flex: none;
+    /*ドラッグによる文字の選択不可*/
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    position:relative;
+}
+
+/*再生パネル内制御部*/
+.playpanelInner {
+    height:82px;
+    width:174px;
+    position: absolute;
+}
+
+/* タイムライン */
+.scroll-pane {
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-left: 167px;
+    height:82px;
+    background: #222;
+}
+
+/*再生ラベル*/
+.play-label{
+    height: 50px;
+    width:165px;
+    padding:0px;
+    background-color: #222;
+}
+
+/*再生ラベル　日付*/
+.play-label > .file-name-label{
+    width:130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 3px 0px 0px 3px;
+    color: #999;
+}
+
+/*再生ラベル　時刻*/
+.play-label > .time-label{
+    margin: 5px 0px 3px 25px;
+    color: #eee;
+}
+
+/*再生設定ラベル*/
+.play-speed-label{
+    font-size: 50%;
+    margin: 0px 0px 0px 4px;
+    color: #eee;
+}
+.time-scale-label{
+    font-size: 50%;
+    margin: 0px 2px 0px 0px;
+    color: #eee;
+}
+
+/*音量設定パネル*/
+.play-volume-panel{
+    left: 135px;
+    top: -205px;
+    width:30px;
+    background-color: #222;
+    color:#fff;
+    padding:0px;
+    margin:0px;
+    position: relative;
+    z-index: 10;
+    display: none;
+}
+.slider-box{
+    width: 260px;
+    /*padding:5px;*/
+}
+.slider.slider-vertical {
+    width: 20px;
+    height: 100px;
+    margin:10px 5px 10px 5px;
+}
+
+/*再生ボタン類*/
+.play-btn{
+    top:50px;
+    position:absolute;
+}
+
+/*音量設定ボタン*/
+.volume-btn{
+    position:absolute;
+    left:137px;
+    z-index: 1;
+}
+/*読込中*/
+#loading-view {
+    /* 領域の位置やサイズに関する設定 */
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* 背景関連の設定
+     -moz-opacity: 0.85;
+     -khtml-opacity: 0.85;
+     opacity: 0.85;*/
+    background-image: url(../images/gif-load.gif);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/*ボタンのフォーカス状態をなくす*/
+.btn-nofocus:focus,
+.btn-nofocus:active{
+    outline: none;
+}
+
+/*設定表示用黒いボタン*/
+.btn-inverse,
+.btn-inverse:focus,
+.btn-inverse.focus
+{
+    color: #FFFFFF;
+    background-color: #222;
+    border-color: #222;
+    outline: none;
+}
+
+.btn-inverse.active:focus,
+.btn-inverse.active.focus,
+.btn-inverse.active,
+.btn-inverse:active
+{
+    color: #FFFFFF;
+    background-color: #888;
+    border-color:#222;
+    outline: none;
+}
+
+.btn-inverse:hover,
+.open .dropdown-toggle.btn-inverse {
+    color: #FFFFFF;
+    background-color: #222;
+    border-color: #888;
+    outline: none;
+}
+
+/* bootstrap-table: clear radius */
+.bootstrap-table .fixed-table-container {
+    -webkit-border-radius:0px;
+    -moz-border-radius:0px;
+    border-radius:0px;
+}
+

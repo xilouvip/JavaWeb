@@ -1,0 +1,86 @@
+@charset "utf-8";
+
+/* タイムライン領域 */
+.timeline-area {
+    position:relative;
+}
+
+/* 時刻表示領域(外側） */
+.timeline-time-block {
+    position:absolute;
+    text-align: center;
+}
+
+/* ボディ領域(外側） */
+.timeline-body-block {
+    position:absolute;
+}
+
+/* ボディ領域(左） */
+.timeline-body-block-left {
+    position:absolute;
+}
+/* ボディ領域(中） */
+.timeline-body-block-mid {
+    position:absolute;
+}
+/* ボディ領域(右） */
+.timeline-body-block-right {
+    position:absolute;
+}
+
+
+/* スケール画像領域 */
+.timeline-scale {
+    background-image:url("../images/timeline_scale.gif");
+    background-repeat:repeat-x;
+    position:absolute;
+}
+
+/* 終端スケール */
+.timeline-scale-term {
+    background-image:url("../images/scale_line.gif");
+    position:absolute;
+}
+
+/* ボディ上 */
+.timeline-body-top {
+    position:absolute;
+}
+
+/* ボディ中 */
+.timeline-body-mid {
+    position:absolute;
+}
+
+/* ボディ下 */
+.timeline-body-bottom {
+    position:absolute;
+}
+
+/* 再生カーソル */
+.timeline-play-cursor {
+    background-image:url("../images/timeline_cursor_.png");
+	top:0px;
+    cursor:pointer;
+    position:absolute;
+    z-index:20;
+}
+
+/* 時刻 */
+.timeline-scale-time {
+    padding:4px 0px 0px 0px;
+	font-size: 85%;
+    color:#eee;
+    position:absolute;
+}
+
+/* ボディ中のカラーバー */
+.timeline-color-block {
+    position:absolute;
+}
+
+/* ファイル名表示高さを指定 */
+.play-label .file-name-label {
+	width: 1.1em;
+}

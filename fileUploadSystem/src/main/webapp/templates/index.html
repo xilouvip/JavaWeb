@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- cache制御(html4用) -->
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Content-Type"
+	content="multipart/form-data; charset=utf-8" />
+<title>FileUpLoad</title>
+<link href="../static/bootstrap/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="../static/bootstrap/bootstrap-dialog/css/bootstrap-dialog.min.css"
+	rel="stylesheet">
+<link href="../static/css/movie-main.css" rel="stylesheet">
+</head>
+<body>
+	<div class="cover-container container-fluid center-block"
+		style="min-width: 300px; width: 600px">
+		<div class="page-header">
+			<h2>
+				<img src="../static/images/logo_meify.png" width="110" /> <small>文件上传</small>
+			</h2>
+		</div>
+		<div style="margin-top: 50px;">
+			<div class="text-center">
+				<h3>文件上传系统</h3>
+			</div>
+
+			<form id="loginform" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<label for="username" class="control-label pull-left">用户名</label> <input
+						type="text" class="form-control" id="username" required>
+				</div>
+				<div class="form-group">
+					<label for="password">密码</label> <input type='password'
+						class="form-control" id="password" required>
+				</div>
+				<div class="form-group text-center">
+					<button type="button" class="btn btn-primary btn-default"
+						id="loginbtn" style="width: 100px;">
+						<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;<span>登录</span>
+					</button>
+					<button type="button" class="btn btn-primary" id="loginclosebtn"
+						style="width: 100px;">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;<span>取消</span>
+					</button>
+				</div>
+			</form>
+
+
+			<form id="uploadForm" method="post" enctype="multipart/form-data"
+				style="display: none">
+				<div class="form-group">
+					<label for="exampleInputFile" class="control-label pull-left">请选择要上传的文件</label>
+					<input type="file" class="form-control" id="file" required
+						name="file">
+				</div>
+
+				<div class="form-group text-center">
+					<button type="button" class="btn btn-primary btn-default"
+						id="uploadfilebtn" style="width: 100px;">
+						<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;<span>上传</span>
+					</button>
+					<button type="button" class="btn btn-primary"
+						id="uploadclosefilebtn" style="width: 100px;">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;<span>取消</span>
+					</button>
+				</div>
+			</form>
+			<div>
+				<table id="tablelist" class="table table-bordered"
+					style="display: none">
+					<thead>
+						<tr>
+							<th>姓名</th>
+							<th>分数</th>
+							<th>日期</th>
+						</tr>
+					</thead>
+
+					<tbody id="tbody-result">
+
+					</tbody>
+
+				</table>
+			</div>
+			<div class="form-group text-center">
+				<button type="button" class="btn btn-primary btn-default"
+					id="updatebtn" style="width: 100px; display: none">
+					<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;<span>更新</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="../static/jquery/jquery/jquery-3.1.1.min.js"></script>
+	<script src="../static/bootstrap/bootstrap/js/bootstrap.min.js"></script>
+	<script
+		src="../static/bootstrap/bootstrap-dialog/js/bootstrap-dialog.min.js"></script>
+	<script src="../static/jquery/jquery-ui/jquery-ui.min.js"></script>
+	<script>
+	$("#loginclosebtn").click(function(){
+		window.close();
+	});
+
+	$("#loginbtn").click(function() {
+		var username = $("#username").val();
+		var password = $("#password").val();// TODO $.md5("xx" + " " + salt)
+
+		var formData = new FormData();
+		formData.append("username", username);
+		formData.append("password", password);
+		var data = formData;
+		var result = $.ajax({
+			url : "log",
+			type : "POST",
+			data : data,
+			cache : false,
+			processData: false,
+			contentType: false,
+			dataType : "json"
+		});
+		result.done(function(data, status) {
+			if (data.status != 1) {
+				BootstrapDialog.alert({
+					title: "登录結果",
+					type: BootstrapDialog.TYPE_WARNING,
+					message: '登录失败。' + data.message,
+					closable : true,
+					draggable: true,
+					buttonLabel:'OK'
+				});
+			} else {
+				$("#loginform").hide();
+				$("#uploadForm").show();
+				
+			}
+		});
+		result.fail(function(data, status) {
+			BootstrapDialog.alert({
+				title: "登录结果",
+				type: BootstrapDialog.TYPE_DANGER,
+				message: '发生系统错误。' + data.message,
+				closable : true,
+				draggable: true,
+				buttonLabel:'OK'
+			});
+		});
+		result.always(function(data, status) {
+			console.log("always data", data, ",status", status);
+		});
+	});
+	
+	
+	$("#updatebtn").click(
+			function() {
+				var result = $.ajax({
+					url : "updatedata",
+					type : "POST",
+					cache : false,
+					processData : false,
+					contentType : false,
+					dataType : "json"
+				});
+				result.done(function(formData, status) {
+					if (formData.status != 1) {
+						BootstrapDialog.alert({
+							title : "更新結果",
+							type : BootstrapDialog.TYPE_WARNING,
+							message : '更新失败。' + formData.message,
+							closable : true,
+							draggable : true,
+							buttonLabel : 'OK'
+						});
+					} else {
+						BootstrapDialog.alert({
+							title : "更新結果",
+							type : BootstrapDialog.TYPE_WARNING,
+							message : '更新成功。' + formData.message,
+							closable : true,
+							draggable : true,
+							buttonLabel : 'OK'
+						});
+						$("#tablelist").hide();
+						$("#updatebtn").hide();
+						//window.location.href = "update.html";
+					}
+				});
+				result.fail(function(formData, status) {
+					BootstrapDialog.alert({
+						title : "更新结果",
+						type : BootstrapDialog.TYPE_DANGER,
+						message : '发生系统错误。' + formData.message,
+						closable : true,
+						draggable : true,
+						buttonLabel : 'OK'
+					});
+				});
+				result
+						.always(function(formData, status) {
+							console.log("always data", formData, ",status",
+									status);
+						});
+			});
+	
+	
+		$("#uploadclosefilebtn").click(function() {
+			window.close();
+		});
+
+		$("#uploadfilebtn").click(
+				function() {
+					var formData = new FormData($("#uploadForm")[0]);
+					var tbody = window.document.getElementById("tbody-result");
+					var result = $.ajax({
+						url : "fileupload",
+						type : "POST",
+						data : formData,
+						enctype : 'multipart/form-data',
+						cache : false,
+						processData : false,
+						contentType : false,
+						dataType : "json"
+					});
+					result.done(function(formData, status) {
+						if (formData.status != 1) {
+							BootstrapDialog.alert({
+								title : "上传結果",
+								type : BootstrapDialog.TYPE_WARNING,
+								message : '上传失败。' + formData.message,
+								closable : true,
+								draggable : true,
+								buttonLabel : 'OK'
+							});
+						} else {
+							var str = "";
+							var mathdata = formData.resultdata;
+							for (i in mathdata) {
+								str += "<tr>" + "<td>" + mathdata[i].name
+										+ "</td>" + "<td>" + mathdata[i].score
+										+ "</td>" + "<td>" + mathdata[i].date
+										+ "</td>" + "</tr>";
+							}
+							$("#tablelist").show();
+							tbody.innerHTML = str;
+							$("#updatebtn").show();
+							//window.location.href = "update.html";
+						}
+					});
+					result.fail(function(formData, status) {
+						BootstrapDialog.alert({
+							title : "上传结果",
+							type : BootstrapDialog.TYPE_DANGER,
+							message : '发生系统错误。' + formData.message,
+							closable : true,
+							draggable : true,
+							buttonLabel : 'OK'
+						});
+					});
+					result
+							.always(function(formData, status) {
+								console.log("always data", formData, ",status",
+										status);
+							});
+				});
+	</script>
+</body>
+</html>
